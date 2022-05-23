@@ -24,14 +24,14 @@ app.get('/api/auth', async(req, res, next)=> {
   }
 });
 
-app.delete('/api/auth', async(res, res, next)=> {
+app.delete('/api/auth', async(req, res, next)=> {
   try {
      res.send();
   }
   catch(ex) {
      next(ex);
   }
-}
+})
 
 app.use((err, req, res, next)=> {
   console.log(err);
