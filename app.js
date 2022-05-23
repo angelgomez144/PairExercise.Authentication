@@ -26,11 +26,16 @@ app.get("/api/auth", async (req, res, next) => {
 
 app.get("/api/users/:id/notes", async (req, res, next) => {
   try {
-    const user = await User.findOne({
-      where: { id: req.params.id },
-      include: Note,
-    });
-    res.json(user.dataValues.notes);
+    const verifiedUser = await User.byToken(req.headers.authorization);
+    console.log(verifiedUser.dataValues.id, "VERIFIED USER DATA VALUES ID");
+    console.log(req.params.id, "REQ PARAMS ID");
+    if (verifiedUser.dataValues.id == req.params.id) {
+      const user = await User.findOne({
+        where: { id: req.params.id },
+        include: Note,
+      });
+      res.json(user.dataValues.notes);
+    }
   } catch (ex) {
     next(ex);
   }

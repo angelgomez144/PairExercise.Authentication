@@ -77,7 +77,8 @@
             this.setState({ auth: response.data });
 
             const { data } = await axios.get(
-              `api/users/${response.data.id}/notes`
+              `api/users/${response.data.id}/notes`,
+              { headers: { authorization: token } }
             );
             this.setState({ notes: data });
           }
