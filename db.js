@@ -17,7 +17,8 @@ const User = conn.define('user', {
 
 User.byToken = async(token)=> {
   try {
-    const user = await User.findByPk(token);
+    const payload = jwt.verify(token, process.env.JWT);
+    const user = await User.findByPk(payload.userId);
     if(user){
       return user;
     }
@@ -40,7 +41,7 @@ User.authenticate = async({ username, password })=> {
     }
   });
   if(user){
-    const token = jwt.sign({userId: user.id}, 'secretKey')
+    const token = jwt.sign({userId: user.id}, process.env.JWT)
     return token;
   }
   const error = Error('bad credentials');
